@@ -56,7 +56,7 @@ export default function Footer() {
               </motion.div>
             </Link>
 
-            <Link href="https://instagram.com/lokhith" target="_blank" rel="noopener noreferrer">
+            <Link href="https://instagram.com/lokhith_46" target="_blank" rel="noopener noreferrer">
               <motion.div
                 whileHover={{ y: -5, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -69,7 +69,7 @@ export default function Footer() {
               </motion.div>
             </Link>
 
-            <Link href="https://linkedin.com/in/lokhith" target="_blank" rel="noopener noreferrer">
+            <Link href="https://www.linkedin.com/in/lokhith-aswa-ab63a4257/" target="_blank" rel="noopener noreferrer">
               <motion.div
                 whileHover={{ y: -5, scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
