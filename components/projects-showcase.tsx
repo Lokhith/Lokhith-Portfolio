@@ -73,7 +73,8 @@ export default function ProjectsShowcase() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [filterRef, filterInView] = useInView({ threshold: 0.1 })
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isMobile = useMediaQuery("(max-width: 640px)")
+  const isSmallScreen = useMediaQuery("(max-width: 768px)")
 
   // Get all unique tags
   const allTags = Array.from(new Set(projects.flatMap((project) => project.tags)))
@@ -117,8 +118,8 @@ export default function ProjectsShowcase() {
         animate={{
           opacity: 1,
           y: 0,
-          height: isFilterOpen || isDesktop ? "auto" : "0px",
-          marginBottom: isFilterOpen || isDesktop ? "3rem" : "0",
+          height: isFilterOpen || !isSmallScreen ? "auto" : "0px",
+          marginBottom: isFilterOpen || !isSmallScreen ? "3rem" : "0",
         }}
         transition={{ duration: 0.5 }}
         className="relative overflow-hidden md:overflow-visible"
@@ -188,8 +189,8 @@ export default function ProjectsShowcase() {
         </p>
       </motion.div>
 
-      {/* Projects grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+      {/* Projects grid - Updated for mobile */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
         {filteredProjects.map((project, index) => (
           <ProjectCard
             key={project.id}
@@ -198,6 +199,7 @@ export default function ProjectsShowcase() {
             isActive={activeProject === project.id}
             setActiveProject={setActiveProject}
             containerRef={containerRef}
+            isMobile={isMobile}
           />
         ))}
       </div>
@@ -224,9 +226,10 @@ interface ProjectCardProps {
   isActive: boolean
   setActiveProject: (id: number | null) => void
   containerRef: React.RefObject<HTMLDivElement>
+  isMobile: boolean
 }
 
-function ProjectCard({ project, index, isActive, setActiveProject, containerRef }: ProjectCardProps) {
+function ProjectCard({ project, index, isActive, setActiveProject, containerRef, isMobile }: ProjectCardProps) {
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.1,
@@ -239,7 +242,7 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
         initial={{ opacity: 0, y: 50 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        whileHover={{ y: -10 }}
+        whileHover={{ y: -5 }}
         className="group relative"
       >
         {/* Card */}
@@ -256,7 +259,7 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
           <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-pink-500/20 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           {/* Image */}
-          <div className="relative h-48 w-full overflow-hidden">
+          <div className="relative h-32 sm:h-48 w-full overflow-hidden">
             <Image
               src={project.image || "/placeholder.svg"}
               alt={project.title}
@@ -265,44 +268,46 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
 
-            {/* Floating tags */}
-            <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-              {project.tags.slice(0, 3).map((tag: string) => (
+            {/* Floating tags - Simplified for mobile */}
+            <div className="absolute bottom-2 left-2 flex flex-wrap gap-1">
+              {project.tags.slice(0, isMobile ? 1 : 3).map((tag: string) => (
                 <motion.span
                   key={tag}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="px-2 py-1 text-xs rounded-full bg-black/60 backdrop-blur-sm text-white border border-white/10"
+                  className="px-1.5 py-0.5 text-[10px] sm:text-xs rounded-full bg-black/60 backdrop-blur-sm text-white border border-white/10"
                 >
                   {tag}
                 </motion.span>
               ))}
-              {project.tags.length > 3 && (
+              {project.tags.length > (isMobile ? 1 : 3) && (
                 <motion.span
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.15 }}
-                  className="px-2 py-1 text-xs rounded-full bg-black/60 backdrop-blur-sm text-white border border-white/10"
+                  className="px-1.5 py-0.5 text-[10px] sm:text-xs rounded-full bg-black/60 backdrop-blur-sm text-white border border-white/10"
                 >
-                  +{project.tags.length - 3}
+                  +{project.tags.length - (isMobile ? 1 : 3)}
                 </motion.span>
               )}
             </div>
           </div>
 
-          {/* Content */}
-          <div className="p-6">
+          {/* Content - Simplified for mobile */}
+          <div className="p-3 sm:p-6">
             <motion.h3
-              className="text-xl font-bold mb-2 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-600 transition-all duration-300"
+              className="text-sm sm:text-xl font-bold mb-1 sm:mb-2 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-600 transition-all duration-300"
               whileHover={{ x: 5 }}
             >
               {project.title}
             </motion.h3>
-            <p className="text-gray-400 mb-4">{project.description}</p>
+            <p className="text-xs sm:text-base text-gray-400 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-3">
+              {project.description}
+            </p>
 
-            {/* Project highlights */}
-            <div className="space-y-2 mb-6">
+            {/* Project highlights - Hidden on mobile */}
+            <div className="hidden sm:block space-y-2 mb-6">
               {project.highlights.slice(0, 2).map((highlight: string, i: number) => (
                 <motion.div
                   key={i}
@@ -320,17 +325,17 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
             </div>
 
             {/* Actions */}
-            <div className="flex justify-between items-center">
-              <div className="flex gap-3">
+            <div className="flex justify-between items-center mt-2 sm:mt-0">
+              <div className="flex gap-2 sm:gap-3">
                 <a
                   href={project.githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors group/link"
                 >
-                  <Github size={18} />
-                  <span className="text-sm relative overflow-hidden">
-                    Code
+                  <Github size={isMobile ? 14 : 18} />
+                  <span className="text-xs sm:text-sm relative overflow-hidden">
+                    {isMobile ? "" : "Code"}
                     <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-400 to-pink-600 transform scale-x-0 group-hover/link:scale-x-100 transition-transform duration-300 origin-left"></span>
                   </span>
                 </a>
@@ -340,16 +345,16 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors group/link"
                 >
-                  <ExternalLink size={18} />
-                  <span className="text-sm relative overflow-hidden">
-                    Demo
+                  <ExternalLink size={isMobile ? 14 : 18} />
+                  <span className="text-xs sm:text-sm relative overflow-hidden">
+                    {isMobile ? "" : "Demo"}
                     <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-400 to-pink-600 transform scale-x-0 group-hover/link:scale-x-100 transition-transform duration-300 origin-left"></span>
                   </span>
                 </a>
               </div>
               <motion.button
                 onClick={() => setActiveProject(isActive ? null : project.id)}
-                className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1 relative overflow-hidden group/more"
+                className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1 relative overflow-hidden group/more"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -357,9 +362,14 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                 <motion.div
                   animate={{ rotate: isActive ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
-                  className="w-4 h-4 relative z-10"
+                  className="w-3 h-3 sm:w-4 sm:h-4 relative z-10"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="w-3 h-3 sm:w-4 sm:h-4"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
@@ -382,9 +392,9 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="col-span-1 md:col-span-2 lg:col-span-3 overflow-hidden"
+            className="col-span-2 sm:col-span-2 lg:col-span-3 overflow-hidden"
           >
-            <div className="mt-4 mb-8 p-8 rounded-xl bg-gradient-to-br from-gray-900/90 to-black/90 border border-purple-500/20 shadow-xl shadow-purple-500/5 relative overflow-hidden">
+            <div className="mt-4 mb-8 p-4 sm:p-8 rounded-xl bg-gradient-to-br from-gray-900/90 to-black/90 border border-purple-500/20 shadow-xl shadow-purple-500/5 relative overflow-hidden">
               {/* Background elements */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl"></div>
@@ -395,7 +405,7 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent"
+                    className="text-xl sm:text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent"
                   >
                     {project.title} - Project Details
                   </motion.h3>
@@ -403,7 +413,7 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-gray-300 mb-6"
+                    className="text-sm sm:text-base text-gray-300 mb-6"
                   >
                     {project.longDescription}
                   </motion.p>
@@ -414,7 +424,7 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="space-y-4 mb-6"
                   >
-                    <h4 className="text-lg font-semibold text-white">Key Features</h4>
+                    <h4 className="text-base sm:text-lg font-semibold text-white">Key Features</h4>
                     <ul className="space-y-2">
                       {project.highlights.map((highlight: string, i: number) => (
                         <motion.li
@@ -425,9 +435,9 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                           className="flex items-start gap-2"
                         >
                           <div className="mt-1 text-purple-400">
-                            <Zap size={16} />
+                            <Zap size={isMobile ? 14 : 16} />
                           </div>
-                          <p className="text-gray-300">{highlight}</p>
+                          <p className="text-xs sm:text-base text-gray-300">{highlight}</p>
                         </motion.li>
                       ))}
                     </ul>
@@ -439,15 +449,15 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                     transition={{ duration: 0.5, delay: 0.3 }}
                     className="space-y-4"
                   >
-                    <h4 className="text-lg font-semibold text-white">Technologies Used</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <h4 className="text-base sm:text-lg font-semibold text-white">Technologies Used</h4>
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {project.tags.map((tag: string, i: number) => (
                         <motion.span
                           key={tag}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.3, delay: i * 0.05 + 0.4 }}
-                          className="px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30"
+                          className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-white border border-purple-500/30 text-xs sm:text-sm"
                         >
                           {tag}
                         </motion.span>
@@ -461,7 +471,7 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="relative h-64 w-full overflow-hidden rounded-lg group"
+                    className="relative h-48 sm:h-64 w-full overflow-hidden rounded-lg group"
                   >
                     <Image
                       src={project.image || "/placeholder.svg"}
@@ -473,26 +483,26 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
 
                     {/* Project title overlay */}
                     <div className="absolute bottom-0 left-0 w-full p-4">
-                      <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-bold text-white">{project.title}</h3>
                       <div className="w-16 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-2"></div>
                     </div>
                   </motion.div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.1 }}
-                      className="p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-purple-500/30 transition-colors duration-300 group"
+                      className="p-3 sm:p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-purple-500/30 transition-colors duration-300 group"
                     >
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <Code
-                          size={18}
+                          size={isMobile ? 14 : 18}
                           className="text-purple-400 group-hover:scale-110 transition-transform duration-300"
                         />
-                        <h5 className="font-medium text-white">Development</h5>
+                        <h5 className="font-medium text-white text-xs sm:text-base">Development</h5>
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-[10px] sm:text-sm text-gray-400">
                         Built with modern development practices including CI/CD, testing, and code quality tools.
                       </p>
                     </motion.div>
@@ -501,16 +511,16 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
-                      className="p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-pink-500/30 transition-colors duration-300 group"
+                      className="p-3 sm:p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-pink-500/30 transition-colors duration-300 group"
                     >
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <Layers
-                          size={18}
+                          size={isMobile ? 14 : 18}
                           className="text-pink-400 group-hover:scale-110 transition-transform duration-300"
                         />
-                        <h5 className="font-medium text-white">Architecture</h5>
+                        <h5 className="font-medium text-white text-xs sm:text-base">Architecture</h5>
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-[10px] sm:text-sm text-gray-400">
                         Designed with scalability in mind using microservices and modular components.
                       </p>
                     </motion.div>
@@ -519,16 +529,16 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.3 }}
-                      className="p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-purple-500/30 transition-colors duration-300 group"
+                      className="p-3 sm:p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-purple-500/30 transition-colors duration-300 group"
                     >
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <Users
-                          size={18}
+                          size={isMobile ? 14 : 18}
                           className="text-purple-400 group-hover:scale-110 transition-transform duration-300"
                         />
-                        <h5 className="font-medium text-white">User Experience</h5>
+                        <h5 className="font-medium text-white text-xs sm:text-base">User Experience</h5>
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-[10px] sm:text-sm text-gray-400">
                         Focused on creating intuitive interfaces with accessibility and usability in mind.
                       </p>
                     </motion.div>
@@ -537,16 +547,16 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: 0.4 }}
-                      className="p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-pink-500/30 transition-colors duration-300 group"
+                      className="p-3 sm:p-4 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-pink-500/30 transition-colors duration-300 group"
                     >
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <Zap
-                          size={18}
+                          size={isMobile ? 14 : 18}
                           className="text-pink-400 group-hover:scale-110 transition-transform duration-300"
                         />
-                        <h5 className="font-medium text-white">Performance</h5>
+                        <h5 className="font-medium text-white text-xs sm:text-base">Performance</h5>
                       </div>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-[10px] sm:text-sm text-gray-400">
                         Optimized for speed with efficient code, lazy loading, and performance monitoring.
                       </p>
                     </motion.div>
@@ -556,29 +566,29 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.5 }}
-                    className="flex justify-center gap-6 mt-8"
+                    className="flex justify-center gap-4 sm:gap-6 mt-6 sm:mt-8"
                   >
                     <motion.a
                       href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-white border border-purple-500/30 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center gap-2 relative overflow-hidden group"
+                      className="px-3 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r from-purple-600/20 to-pink-600/20 text-white border border-purple-500/30 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center gap-1.5 sm:gap-2 relative overflow-hidden group text-xs sm:text-base"
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <span className="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                      <Github size={18} className="relative z-10" />
-                      <span className="relative z-10">View Source Code</span>
+                      <Github size={isMobile ? 14 : 18} className="relative z-10" />
+                      <span className="relative z-10">View Code</span>
                     </motion.a>
                     <motion.a
                       href={project.demoLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 flex items-center gap-2"
+                      className="px-3 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-base"
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <ExternalLink size={18} />
+                      <ExternalLink size={isMobile ? 14 : 18} />
                       <span>Live Demo</span>
                     </motion.a>
                   </motion.div>

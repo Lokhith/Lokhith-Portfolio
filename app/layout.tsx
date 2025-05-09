@@ -5,19 +5,16 @@ import "./globals.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import StarBackground from "@/components/star-background"
+import MobileNav from "@/components/mobile-nav"
 
 const inter = Inter({ subsets: ["latin"] })
 
 // Add viewport meta tag to ensure proper mobile rendering
 export const metadata = {
-  title: "About Me",
-};
-
-export const generateViewport = () => ({
-  width: "device-width",
-  initialScale: 1,
-});
-
+  title: "Lokhith Aswa A | Portfolio",
+  description: "Personal portfolio website of Lokhith Aswa A",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+}
 
 export default function RootLayout({
   children,
@@ -32,8 +29,9 @@ export default function RootLayout({
           <StarBackground />
 
           <Navbar />
-          <main className="flex-grow relative z-10">{children}</main>
+          <main className="flex-grow relative z-10 pb-16 md:pb-0">{children}</main>
           <Footer />
+          <MobileNav />
         </ThemeProvider>
       </body>
     </html>

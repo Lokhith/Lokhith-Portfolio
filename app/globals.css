@@ -239,3 +239,15 @@ html {
   align-items: center;
   justify-content: center;
 }
+
+/* Mobile bottom navigation spacing */
+@media (max-width: 768px) {
+  .pb-mobile-nav {
+    padding-bottom: 4rem;
+  }
+
+  /* Adjust footer for mobile nav */
+  footer {
+    margin-bottom: 4rem;
+  }
+}
