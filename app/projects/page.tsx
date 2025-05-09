@@ -1,10 +1,15 @@
 import type { Metadata } from "next"
 import ProjectsShowcase from "@/components/projects-showcase"
 
-export const metadata: Metadata = {
-  title: "Projects | Lokhith Aswa A",
-  description: "Explore innovative projects developed by Lokhith Aswa A",
-}
+export const metadata = {
+  title: "Projects",
+};
+
+export const generateViewport = () => ({
+  width: "device-width",
+  initialScale: 1,
+});
+
 
 export default function Projects() {
   return (

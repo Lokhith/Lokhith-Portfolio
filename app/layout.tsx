@@ -10,10 +10,14 @@ const inter = Inter({ subsets: ["latin"] })
 
 // Add viewport meta tag to ensure proper mobile rendering
 export const metadata = {
-  title: "Lokhith Aswa A | Portfolio",
-  description: "Personal portfolio website of Lokhith Aswa A",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-}
+  title: "About Me",
+};
+
+export const generateViewport = () => ({
+  width: "device-width",
+  initialScale: 1,
+});
+
 
 export default function RootLayout({
   children,

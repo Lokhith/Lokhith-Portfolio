@@ -1,10 +1,15 @@
 import type { Metadata } from "next"
 import Hero from "@/components/hero"
 
-export const metadata: Metadata = {
-  title: "Home | Lokhith Aswa A",
-  description: "Personal portfolio of Lokhith Aswa A - Software Developer, MERN Stack Developer, Prompt Engineer",
-}
+export const metadata = {
+  title: "About Me",
+};
+
+export const generateViewport = () => ({
+  width: "device-width",
+  initialScale: 1,
+});
+
 
 export default function Home() {
   return (

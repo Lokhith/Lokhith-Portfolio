@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { Github, ExternalLink, Code, Layers, Users, Zap, Filter, X } from "lucide-react"
 import { useInView } from "react-intersection-observer"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 const projects = [
   {
@@ -72,6 +73,7 @@ export default function ProjectsShowcase() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [filterRef, filterInView] = useInView({ threshold: 0.1 })
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   // Get all unique tags
   const allTags = Array.from(new Set(projects.flatMap((project) => project.tags)))
@@ -115,8 +117,8 @@ export default function ProjectsShowcase() {
         animate={{
           opacity: 1,
           y: 0,
-          height: isFilterOpen || window.innerWidth >= 768 ? "auto" : "0px",
-          marginBottom: isFilterOpen || window.innerWidth >= 768 ? "3rem" : "0",
+          height: isFilterOpen || isDesktop ? "auto" : "0px",
+          marginBottom: isFilterOpen || isDesktop ? "3rem" : "0",
         }}
         transition={{ duration: 0.5 }}
         className="relative overflow-hidden md:overflow-visible"
