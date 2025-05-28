@@ -77,38 +77,34 @@ export default function AboutSection() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="space-y-6"
         >
+          {/* New detailed description section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="p-4 sm:p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 rounded-xl border border-purple-500/10 shadow-lg shadow-purple-500/5 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-300 transform hover:-translate-y-1 glass-card"
+            className="space-y-4"
           >
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 text-xl">
-                Visionary Developer & Digital Craftsman
-              </span>{" "}
-              — I'm <span className="font-bold text-purple-400">Lokhith Aswa A</span>, a passionate technologist who
-              transforms complex challenges into elegant digital solutions. With an insatiable curiosity and creative
-              mindset, I blend technical expertise with artistic vision to build experiences that resonate with users
-              and solve real-world problems.
-            </p>
-          </motion.div>
+            <motion.div className="p-5 bg-gradient-to-br from-blue-900/20 to-cyan-900/20 rounded-xl border border-blue-500/10 shadow-lg shadow-blue-500/5 hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 transform hover:-translate-y-1 glass-card">
+              <p className="text-base text-gray-300 leading-relaxed">
+                I'm a passionate and self-driven <span className="font-bold text-blue-400">Full Stack Developer</span>{" "}
+                with a strong focus on building responsive and user-centric web applications. With hands-on experience
+                in technologies like{" "}
+                <span className="font-bold text-cyan-400">React, Next.js, Node.js, MongoDB, and Tailwind CSS</span>, I specialize
+                in crafting seamless front-end interfaces backed by scalable backend systems. I love transforming
+                complex ideas into elegant, functional digital experiences that deliver real-world impact.
+              </p>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="p-6 bg-gradient-to-br from-pink-900/20 to-purple-900/20 rounded-xl border border-pink-500/10 shadow-lg shadow-pink-500/5 hover:shadow-pink-500/20 hover:border-pink-500/30 transition-all duration-300 transform hover:-translate-y-1 glass-card"
-          >
-            <p className="text-lg text-gray-300 leading-relaxed">
-              <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 text-xl">
-                Full-Stack Maestro
-              </span>{" "}
-              — My expertise in the <span className="font-bold text-pink-400">MERN ecosystem</span> allows me to
-              orchestrate every aspect of web development, from crafting pixel-perfect interfaces to architecting robust
-              backend systems. I don't just write code; I create digital experiences that blend innovation with
-              performance, ensuring each project stands at the intersection of technology and human-centered design.
-            </p>
+            <motion.div className="p-5 bg-gradient-to-br from-emerald-900/20 to-teal-900/20 rounded-xl border border-emerald-500/10 shadow-lg shadow-emerald-500/5 hover:shadow-emerald-500/20 hover:border-emerald-500/30 transition-all duration-300 transform hover:-translate-y-1 glass-card">
+              <p className="text-base text-gray-300 leading-relaxed">
+                Beyond coding, I'm deeply invested in the evolving world of{" "}
+                <span className="font-bold text-emerald-400">AI and Prompt Engineering</span>. I actively explore how AI
+                can enhance user experiences, automate workflows, and push the boundaries of modern development. Whether
+                it's building e-commerce platforms, integrating intelligent features, or optimizing performance, I
+                strive to bring <span className="font-bold text-teal-400">innovation and reliability</span> to every
+                project I undertake.
+              </p>
+            </motion.div>
           </motion.div>
 
           <motion.div whileHover={{ scale: 1.03 }} className="mt-8 flex justify-center md:justify-start">

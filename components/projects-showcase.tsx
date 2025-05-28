@@ -16,9 +16,9 @@ const projects = [
     description: "An innovative online shopping platform that bridges the gap between online and offline shopping.",
     longDescription:
       "Pick&Fit revolutionizes the online shopping experience by allowing users to order products, try them physically at home, and decide to purchase or return them, ensuring a perfect fit every time. Future enhancements include a virtual try-on feature for a complete digital shopping experience.",
-    image: "/ecommerce-virtual-try-on.png",
-    tags: ["React", "Node.js", "MongoDB", "Express", "Redux", "Material UI"],
-    githubLink: "https://github.com/lokhith/pick-and-fit",
+    image: "/home-page.png",
+    tags: ["Next.js", "Tailwind CSS"],
+    githubLink: "https://github.com/Lokhith/pick-and-fit",
     demoLink: "https://pick-and-fit.vercel.app",
     highlights: [
       "Home try-on with hassle-free returns",
@@ -27,6 +27,7 @@ const projects = [
       "Real-time order tracking",
     ],
     color: "from-purple-500 to-pink-500",
+    category: "frontend",
   },
   {
     id: 2,
@@ -35,8 +36,8 @@ const projects = [
     longDescription:
       "TurfLink offers a range of services, including turf booking, player matching, and event management, creating a seamless experience for anyone looking to stay active and competitive. The platform helps users find nearby sports facilities, join teams, and participate in local tournaments.",
     image: "/sports-analytics-dashboard.png",
-    tags: ["React", "Node.js", "MongoDB", "Express", "Socket.io", "Mapbox"],
-    githubLink: "https://github.com/lokhith/turflink",
+    tags: ["HTML", "CSS", "JavaScript", "Node.js", "MongoDB"],
+    githubLink: "https://github.com/Lokhith/Turf_Link",
     demoLink: "https://turflink.vercel.app",
     highlights: [
       "Real-time turf availability and booking",
@@ -45,6 +46,7 @@ const projects = [
       "Community forums and event calendars",
     ],
     color: "from-emerald-500 to-cyan-500",
+    category: "fullstack",
   },
   {
     id: 3,
@@ -53,10 +55,10 @@ const projects = [
       "A premium e-commerce platform dedicated to golfers, featuring a curated selection of high-quality golf equipment.",
     longDescription:
       "Golfgear offers a curated selection of high-quality golf clubs, accessories, and apparel. It includes advanced filtering, personalized recommendations, and a seamless shopping experience for golf enthusiasts. The platform also features expert reviews, product comparisons, and maintenance guides.",
-    image: "/golf-ecommerce-website.png",
-    tags: ["React", "Node.js", "MongoDB", "Express", "Stripe", "AWS"],
-    githubLink: "https://github.com/lokhith/golfgear",
-    demoLink: "https://golfgear.vercel.app",
+    image: "/golf-ecommerce-screenshot.png",
+    tags: ["Next.js", "Tailwind CSS"],
+    githubLink: "https://github.com/Lokhith/Golf-ecommerce",
+    demoLink: "https://golf-ecommerce-tau.vercel.app/",
     highlights: [
       "Advanced product filtering and search",
       "Personalized equipment recommendations",
@@ -64,23 +66,61 @@ const projects = [
       "Expert reviews and buying guides",
     ],
     color: "from-amber-500 to-red-500",
+    category: "frontend",
+  },
+  {
+    id: 4,
+    title: "Food Delivery App",
+    description: "Order Your Favorites - A React-based food delivery frontend with intuitive ordering interface.",
+    longDescription:
+      "This React-based food delivery frontend offers users a simple interface to browse food items and place orders. Designed with a clean and appealing layout, it mimics real-world delivery apps to provide a smooth user experience. It supports cart functionality and displays food item details elegantly.",
+    image: "/food-delivery-screenshot.png",
+    tags: ["React.js", "CSS"],
+    githubLink: "https://github.com/Lokhith/Food_delivery",
+    demoLink: "http://food-delivery-jade-rho.vercel.app/",
+    highlights: [
+      "Add-to-cart and order interface",
+      "Dynamic rendering of food items",
+      "Clean UI with category-based browsing",
+      "Responsive design for all devices",
+    ],
+    color: "from-orange-500 to-red-500",
+    category: "frontend",
+  },
+  {
+    id: 5,
+    title: "Codeverse",
+    description: "Developer Stats Aggregator - A platform for developers to showcase their coding profiles and stats.",
+    longDescription:
+      "Codeverse is a platform for developers to link their coding profiles (e.g., LeetCode, CodeChef) and showcase their coding stats in one place. It aggregates and visualizes user performance and coding activity. A perfect tool for job seekers and recruiters to highlight consistent learning and growth.",
+    image: "/codeverse-screenshot.png",
+    tags: ["Next.js", "Tailwind CSS"],
+    githubLink: "https://github.com/Lokhith/CodeVerse",
+    demoLink: "https://codeverse-opal.vercel.app/",
+    highlights: [
+      "Link multiple coding platform accounts",
+      "Fetch and display coding stats dynamically",
+      "Clean dashboard-style presentation",
+      "Future scope for comparison with peers",
+    ],
+    color: "from-blue-500 to-purple-500",
+    category: "frontend",
   },
 ]
 
 export default function ProjectsShowcase() {
   const [activeProject, setActiveProject] = useState<number | null>(null)
-  const [selectedTag, setSelectedTag] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [filterRef, filterInView] = useInView({ threshold: 0.1 })
   const isMobile = useMediaQuery("(max-width: 640px)")
   const isSmallScreen = useMediaQuery("(max-width: 768px)")
 
-  // Get all unique tags
-  const allTags = Array.from(new Set(projects.flatMap((project) => project.tags)))
-
-  // Filter projects based on selected tag
-  const filteredProjects = selectedTag ? projects.filter((project) => project.tags.includes(selectedTag)) : projects
+  // Filter projects based on selected category
+  const filteredProjects = selectedCategory
+    ? projects.filter((project) => project.category === selectedCategory)
+    : projects
 
   // Close expanded project when clicking outside
   useEffect(() => {
@@ -111,7 +151,7 @@ export default function ProjectsShowcase() {
         </motion.button>
       </div>
 
-      {/* Tag filter */}
+      {/* Category filter */}
       <motion.div
         ref={filterRef}
         initial={{ opacity: 0, y: 20 }}
@@ -127,18 +167,20 @@ export default function ProjectsShowcase() {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/10 to-pink-900/10 rounded-xl blur-xl -z-10"></div>
 
         <div className="py-6 px-4 rounded-xl border border-purple-500/10 bg-black/20 backdrop-blur-sm">
-          <h3 className="text-center text-lg font-medium text-white mb-4">Filter by Technology</h3>
+          <h3 className="text-center text-lg font-medium text-white mb-4">Filter by Project Type</h3>
 
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
             <motion.button
-              onClick={() => setSelectedTag(null)}
+              onClick={() => setSelectedCategory(null)}
               className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 overflow-hidden ${
-                selectedTag === null ? "text-white" : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
+                selectedCategory === null
+                  ? "text-white"
+                  : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {selectedTag === null && (
+              {selectedCategory === null && (
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 -z-10"
                   layoutId="activeFilter"
@@ -147,25 +189,43 @@ export default function ProjectsShowcase() {
               All Projects
             </motion.button>
 
-            {allTags.map((tag) => (
-              <motion.button
-                key={tag}
-                onClick={() => setSelectedTag(tag)}
-                className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 overflow-hidden ${
-                  selectedTag === tag ? "text-white" : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {selectedTag === tag && (
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 -z-10"
-                    layoutId="activeFilter"
-                  />
-                )}
-                {tag}
-              </motion.button>
-            ))}
+            <motion.button
+              onClick={() => setSelectedCategory("fullstack")}
+              className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 overflow-hidden ${
+                selectedCategory === "fullstack"
+                  ? "text-white"
+                  : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {selectedCategory === "fullstack" && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-cyan-600 -z-10"
+                  layoutId="activeFilter"
+                />
+              )}
+              Full Stack Projects
+            </motion.button>
+
+            <motion.button
+              onClick={() => setSelectedCategory("frontend")}
+              className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 overflow-hidden ${
+                selectedCategory === "frontend"
+                  ? "text-white"
+                  : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {selectedCategory === "frontend" && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 -z-10"
+                  layoutId="activeFilter"
+                />
+              )}
+              Frontend Projects
+            </motion.button>
           </div>
         </div>
       </motion.div>
@@ -180,10 +240,13 @@ export default function ProjectsShowcase() {
         <p className="text-gray-400">
           Showing <span className="text-white font-medium">{filteredProjects.length}</span> of{" "}
           <span className="text-white font-medium">{projects.length}</span> projects
-          {selectedTag && (
+          {selectedCategory && (
             <>
               {" "}
-              filtered by <span className="text-purple-400 font-medium">{selectedTag}</span>
+              filtered by{" "}
+              <span className="text-purple-400 font-medium">
+                {selectedCategory === "fullstack" ? "Full Stack" : "Frontend"}
+              </span>
             </>
           )}
         </p>
@@ -209,7 +272,7 @@ export default function ProjectsShowcase() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-16">
           <p className="text-gray-400 text-lg mb-4">No projects found with the selected filter.</p>
           <button
-            onClick={() => setSelectedTag(null)}
+            onClick={() => setSelectedCategory(null)}
             className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white"
           >
             Show All Projects
@@ -253,6 +316,19 @@ function ProjectCard({ project, index, isActive, setActiveProject, containerRef,
         >
           {/* Background gradient */}
           <div className="absolute inset-0 opacity-20 bg-gradient-to-br from-purple-900/30 to-pink-900/30"></div>
+
+          {/* Project category badge */}
+          <div className="absolute top-2 right-2 z-10">
+            <span
+              className={`px-2 py-1 text-[10px] sm:text-xs rounded-full font-medium ${
+                project.category === "fullstack"
+                  ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                  : "bg-blue-500/20 text-blue-300 border border-blue-500/30"
+              }`}
+            >
+              {project.category === "fullstack" ? "Full Stack" : "Frontend"}
+            </span>
+          </div>
 
           {/* Glowing corners */}
           <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-purple-500/20 to-transparent rounded-br-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
