@@ -21,7 +21,7 @@ export default function Hero() {
   // For typing animation
   const [displayText, setDisplayText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
-  const fullText = "I'm Lokhith Aswa A"
+  const fullText = "I'm Lokhith Aswa"
 
   useEffect(() => {
     const interval = setInterval(() => {

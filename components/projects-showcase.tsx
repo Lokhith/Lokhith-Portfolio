@@ -35,7 +35,7 @@ const projects = [
     description: "A dedicated sports platform designed to connect athletes and sports enthusiasts.",
     longDescription:
       "TurfLink offers a range of services, including turf booking, player matching, and event management, creating a seamless experience for anyone looking to stay active and competitive. The platform helps users find nearby sports facilities, join teams, and participate in local tournaments.",
-    image: "/sports-analytics-dashboard.png",
+    image: "/turflink-screenshot.jpeg", // Changed from "/sports-analytics-dashboard.png"
     tags: ["HTML", "CSS", "JavaScript", "Node.js", "MongoDB"],
     githubLink: "https://github.com/Lokhith/Turf_Link",
     demoLink: "https://turflink.vercel.app",
